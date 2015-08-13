@@ -24,7 +24,7 @@ _NOTE: The following URLs are not currently active pending getting things config
 #### Using SBT
 
 ```
-libraryDependncies += "org.saegesser" %% "scalawebsocket" % "0.1.1"
+libraryDependncies += "org.saegesser" %% "scalawebsocket" % "0.1.2"
 ```
 
 #### Using Maven
@@ -32,7 +32,7 @@ libraryDependncies += "org.saegesser" %% "scalawebsocket" % "0.1.1"
 <dependency>
   <groupId>org.saegesser</groupId>
   <artifactId>scalawebsocket_2.10</artifactId>
-  <version>0.1.1</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 

@@ -4,7 +4,7 @@ homepage := Some(url("https://github.com/pbuda/scalawebsocket"))
 
 licenses := Seq("Apache License 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
-organization := "eu.piotrbuda"
+organization := "org.saegesser"
 
 version := "0.1.2"
 
@@ -49,14 +49,14 @@ pomIncludeRepository := {
 
 pomExtra := (
   <scm>
-    <url>git@github.com:pbuda/scalawebsocket.git</url>
-    <connection>scm:git:git@github.com:pbuda/scalawebsocket.git</connection>
-    </scm>
-    <developers>
+    <url>git@github.com:marcsaegesser/scalawebsocket.git</url>
+    <connection>scm:git:git@github.com:marcsaegesser/scalawebsocket.git</connection>
+  </scm>
+  <developers>
     <developer>
-    <id>pbuda</id>
-    <name>Piotr Buda</name>
-    <url>http://www.piotrbuda.eu</url>
-      </developer>
-    </developers>
+      <id>marcsaegesser</id>
+      <name>Marc Saegesser</name>
+      <url>https://github.com/marcsaegesser</url>
+    </developer>
+  </developers>
 )
