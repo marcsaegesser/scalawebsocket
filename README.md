@@ -19,8 +19,6 @@ simply add Sonatype snapshot repository to resolvers.
 resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositories/snapshots/"
 ```
 
-_NOTE: The following URLs are not currently active pending getting things configured in Sonatype_
-
 #### Using SBT
 
 ```
