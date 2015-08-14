@@ -23,7 +23,8 @@ import java.io.IOException
 import javax.servlet.http.HttpServletRequest
 import com.typesafe.scalalogging.slf4j._
 import java.util.concurrent.{TimeUnit, CountDownLatch}
-import com.ning.http.client.{AsyncHttpClient, websocket}
+import com.ning.http.client.AsyncHttpClient
+import com.ning.http.client.ws.{ WebSocket => WS }
 import org.scalatest._
 import org.scalatest.matchers._
 

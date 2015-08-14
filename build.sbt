@@ -1,12 +1,12 @@
 name := "scalawebsocket"
 
-homepage := Some(url("https://github.com/pbuda/scalawebsocket"))
+homepage := Some(url("https://github.com/marcsaegesser/scalawebsocket"))
 
 licenses := Seq("Apache License 2.0" -> url("http://www.apache.org/licenses/LICENSE-2.0"))
 
 organization := "org.saegesser"
 
-version := "0.1.2"
+version := "0.1.2-SNAPSHOT"
 
 scalaVersion := "2.11.6"
 
@@ -15,7 +15,8 @@ crossScalaVersions := List("2.11.6", "2.10.5")
 fork in Test := true
 
 libraryDependencies ++= Seq(
-  "com.ning" % "async-http-client" % "1.7.13",
+  "com.ning"      %  "async-http-client" % "1.9.30",
+  "org.scala-stm" %% "scala-stm"         % "0.7",
 
   //logging
   "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
@@ -57,6 +58,11 @@ pomExtra := (
       <id>marcsaegesser</id>
       <name>Marc Saegesser</name>
       <url>https://github.com/marcsaegesser</url>
+    </developer>
+    <developer>
+      <id>pbuda</id>
+      <name>Piotr Buda</name>
+      <url>http://www.piotrbuda.eu</url>
     </developer>
   </developers>
 )
