@@ -1,4 +1,5 @@
 /*
+ * Copyright 2015 Marc Saegesser
  * Copyright 2013 Piotr Buda
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -16,9 +17,15 @@
 
 package scalawebsocket
 
-import com.ning.http.client.{websocket, AsyncHttpClient}
-import com.ning.http.client.websocket.{WebSocketTextListener, WebSocketByteListener, WebSocketUpgradeHandler}
-import com.typesafe.scalalogging.log4j.Logging
+import scala.concurrent.stm._
+import com.ning.http.client.AsyncHttpClient
+import com.ning.http.client.ws.{
+  WebSocket => WS,
+  WebSocketTextListener,
+  WebSocketByteListener,
+  WebSocketUpgradeHandler
+}
+import com.typesafe.scalalogging.slf4j._
 
 object WebSocket {
   def apply() = {
@@ -36,7 +43,7 @@ object WebSocket {
   *
   * @param client preconfigured instance of the [[com.ning.http.client.AsyncHttpClient]]
   */
-class WebSocket(client: AsyncHttpClient) extends Logging {
+class WebSocket(client: AsyncHttpClient) extends StrictLogging {
   self =>
 
   type OnTextMessageHandler = String => Unit
@@ -44,12 +51,12 @@ class WebSocket(client: AsyncHttpClient) extends Logging {
   type OnWebSocketOperationHandler = WebSocket => Unit
   type OnErrorHandler = Throwable => Unit
 
-  private var ws: websocket.WebSocket = _
-  private var textMessageHandlers = List[OnTextMessageHandler]()
-  private var binaryMessageHandlers = List[OnBinaryMessageHandler]()
-  private var openHandlers = List[OnWebSocketOperationHandler]()
-  private var closeHandlers = List[OnWebSocketOperationHandler]()
-  private var errorHandlers = List[OnErrorHandler]()
+  private val ws = Ref(Option.empty[WS]).single
+  private val textMessageHandlers = Ref(List.empty[OnTextMessageHandler]).single
+  private val binaryMessageHandlers = Ref(List.empty[OnBinaryMessageHandler]).single
+  private val openHandlers = Ref(List.empty[OnWebSocketOperationHandler]).single
+  private val closeHandlers = Ref(List.empty[OnWebSocketOperationHandler]).single
+  private val errorHandlers = Ref(List.empty[OnErrorHandler]).single
 
   /** Open a websocket to the specified url
     *
@@ -57,11 +64,13 @@ class WebSocket(client: AsyncHttpClient) extends Logging {
     * @return this [[scalawebsocket.WebSocket]]
     */
   def open(url: String): WebSocket = {
-    if (!(url.startsWith("ws://") || url.startsWith("wss://"))) throw new IllegalArgumentException("Only ws and wss schemes are supported")
+    require(url.startsWith("ws://") || url.startsWith("wss://"), "Only ws and wss schemes are supported")
     if (client.isClosed) throw new IllegalStateException("Client is closed, please create a new scalawebsocket.WebSocket instance by calling WebSocket()")
+
     val handler = new WebSocketUpgradeHandler.Builder().addWebSocketListener(internalWebSocketListener).build()
-    ws = client.prepareGet(url).execute(handler).get()
-    openHandlers foreach (_(self))
+    ws() = Option(client.prepareGet(url).execute(handler).get())
+
+    openHandlers() foreach (_(self))
     this
   }
 
@@ -74,22 +83,22 @@ class WebSocket(client: AsyncHttpClient) extends Logging {
   protected def internalWebSocketListener = {
     new WebSocketListener {
       def onError(t: Throwable) {
-        errorHandlers foreach (_(t))
+        errorHandlers() foreach (_(t))
       }
 
       def onMessage(message: String) {
-        textMessageHandlers foreach (_(message))
+        textMessageHandlers() foreach (_(message))
       }
 
       def onMessage(message: Array[Byte]) {
-        binaryMessageHandlers foreach (_(message))
+        binaryMessageHandlers() foreach (_(message))
       }
 
-      def onClose(ws: websocket.WebSocket) {
-        closeHandlers foreach (_(self))
+      def onClose(ws: WS) {
+        closeHandlers() foreach (_(self))
       }
 
-      def onOpen(ws: websocket.WebSocket) {
+      def onOpen(ws: WS) {
         // onOpen handlers are called from open() after the WebSocket has been initialized
       }
 
@@ -104,69 +113,73 @@ class WebSocket(client: AsyncHttpClient) extends Logging {
   }
 
   def onTextMessage(handler: OnTextMessageHandler): WebSocket = {
-    textMessageHandlers ::= handler
+    textMessageHandlers transform { handler :: _ }
     this
   }
 
   def removeOnTextMessage(handler: OnTextMessageHandler): WebSocket = {
-    textMessageHandlers = textMessageHandlers filterNot (_ == handler)
+    textMessageHandlers transform { _ filterNot (_ == handler) }
     this
   }
 
   def onBinaryMessage(handler: OnBinaryMessageHandler): WebSocket = {
-    binaryMessageHandlers ::= handler
+    binaryMessageHandlers transform { handler :: _ }
     this
   }
 
   def removeOnBinaryMessage(handler: OnBinaryMessageHandler): WebSocket = {
-    binaryMessageHandlers = binaryMessageHandlers filterNot (_ == handler)
+    binaryMessageHandlers transform { _ filterNot (_ == handler) }
     this
   }
 
   def onOpen(handler: OnWebSocketOperationHandler): WebSocket = {
-    openHandlers ::= handler
+    openHandlers transform { handler :: _ }
     this
   }
 
   def removeOnOpen(handler: OnWebSocketOperationHandler): WebSocket = {
-    openHandlers = openHandlers filterNot (_ == handler)
+    openHandlers transform { _ filterNot (_ == handler) }
     this
   }
 
   def onClose(handler: OnWebSocketOperationHandler): WebSocket = {
-    closeHandlers ::= handler
+    closeHandlers transform { handler :: _ }
     this
   }
 
   def removeOnClose(handler: OnWebSocketOperationHandler): WebSocket = {
-    closeHandlers = closeHandlers filterNot (_ == handler)
+    closeHandlers transform { _ filterNot (_ == handler) }
     this
   }
 
   def onError(handler: OnErrorHandler): WebSocket = {
-    errorHandlers ::= handler
+    errorHandlers transform { handler :: _ }
     this
   }
 
   def removeOnError(handler: OnErrorHandler): WebSocket = {
-    errorHandlers = errorHandlers filterNot (_ == handler)
+    errorHandlers transform { _ filterNot (_ == handler) }
     this
   }
 
   def sendText(message: String): WebSocket = {
-    if (ws.isOpen) ws.sendTextMessage(message)
-    else throw new IllegalStateException("WebSocket is closed, use WebSocket.open(String) to reconnect)")
+    ws() match {
+      case Some(s) if s.isOpen => s.sendMessage(message)
+      case _                   => throw new IllegalStateException("WebSocket is closed, use WebSocket.open(String) to reconnect)")
+    }
     this
   }
 
   def send(message: Array[Byte]): WebSocket = {
-    if (ws.isOpen) ws.sendMessage(message)
-    else throw new IllegalStateException("WebSocket is closed, use WebSocket.open(String) to reconnect)")
+    ws() match {
+      case Some(s) if s.isOpen => s.sendMessage(message)
+      case _                   => throw new IllegalStateException("WebSocket is closed, use WebSocket.open(String) to reconnect)")
+    }
     this
   }
 
   def close(): WebSocket = {
-    ws.close()
+    ws() foreach { _.close() }
     this
   }
 

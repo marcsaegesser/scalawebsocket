@@ -3,11 +3,11 @@ ScalaWebSocket
 
 ScalaWebSocket provides Scala vocabulary for async-http-client's WebSocket support.
 
-Currently compiled against Scala 2.10.0
+Currently compiled against Scala 2.10.5 and 2.11.6
 
-Current version is **0.1.0**
+Current version is **0.1.2**
 
-[![Build Status](https://travis-ci.org/pbuda/scalawebsocket.png)](https://travis-ci.org/pbuda/scalawebsocket)
+[![Build Status](https://travis-ci.org/marcsaegesser/scalawebsocket.png)](https://travis-ci.org/marcsaegesser/scalawebsocket)
 
 Installation
 ============
@@ -22,15 +22,15 @@ resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositori
 #### Using SBT
 
 ```
-libraryDependncies += "eu.piotrbuda" %% "scalawebsocket" % "0.1.0"
+libraryDependncies += "org.saegesser" %% "scalawebsocket" % "0.1.2"
 ```
 
 #### Using Maven
 ```
 <dependency>
-  <groupId>eu.piotrbuda</groupId>
+  <groupId>org.saegesser</groupId>
   <artifactId>scalawebsocket_2.10</artifactId>
-  <version>0.1.0</version>
+  <version>0.1.2</version>
 </dependency>
 ```
 
@@ -62,10 +62,13 @@ To be able to remove a handler from WebSocket, it has to be a named handler.
 
 Credits
 =======
+This project was originally implemented by Piotr Buda (@pbudy). That project has been dormant for a couple years.
+
 Credit has to go to @jfarcand as I used testing part of his [WCS project](https://github.com/jfarcand/WCS) project.
 
 License
 =======
+    Copyright 2015 Marc Saegesser
     Copyright 2013 Piotr Buda
 
     Licensed under the Apache License, Version 2.0 (the "License");
