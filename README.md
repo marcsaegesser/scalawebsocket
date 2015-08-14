@@ -62,7 +62,7 @@ To be able to remove a handler from WebSocket, it has to be a named handler.
 
 Credits
 =======
-This project was originally implemented by Piotr Buda (@pbudy). That project has been dormant for a couple years.
+This project was originally implemented by Piotr Buda (@pbuda). That project has been dormant for a couple years.
 
 Credit has to go to @jfarcand as I used testing part of his [WCS project](https://github.com/jfarcand/WCS) project.
 
