@@ -6,7 +6,7 @@ licenses := Seq("Apache License 2.0" -> url("http://www.apache.org/licenses/LICE
 
 organization := "org.saegesser"
 
-version := "0.1.2-SNAPSHOT"
+version := "0.1.2"
 
 scalaVersion := "2.11.6"
 
