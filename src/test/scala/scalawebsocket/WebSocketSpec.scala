@@ -172,20 +172,6 @@ class WebSocketSpec extends FlatSpec with TestServer with BeforeAndAfterAll with
     }
   }
 
-  it should "not allow sending text message after close" in {
-    val ws = WebSocket().open(getTargetUrl).close()
-    intercept[IllegalStateException] {
-      ws.sendText("text")
-    }
-  }
-
-  it should "not allow sending binary message after close" in {
-    val ws = WebSocket().open(getTargetUrl).close()
-    intercept[IllegalStateException] {
-      ws.send("text".getBytes)
-    }
-  }
-
   it should "not allow non ws/wss schemes connection" in {
     intercept[IllegalArgumentException] {
       WebSocket().open("https://localhost")

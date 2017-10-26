@@ -29,7 +29,7 @@ trait TestServer extends StrictLogging {
   val server = new Server()
   val connector = new SelectChannelConnector
 
-  def setUpServer() {
+  def setUpServer() = {
     server.addConnector(connector)
     val _wsHandler = getWebSocketHandler
     server.setHandler(_wsHandler)
@@ -37,7 +37,7 @@ trait TestServer extends StrictLogging {
     logger.info("Local HTTP server started successfully")
   }
 
-  def tearDownServer() {
+  def tearDownServer() = {
     server.stop()
   }
 
@@ -47,7 +47,7 @@ trait TestServer extends StrictLogging {
       _webSocketFactory
     }
 
-    override def handle(target: String, baseRequest: Request, request: HttpServletRequest, response: HttpServletResponse) {
+    override def handle(target: String, baseRequest: Request, request: HttpServletRequest, response: HttpServletResponse): Unit = {
       if (_webSocketFactory.acceptWebSocket(request, response) || response.isCommitted) return
       super.handle(target, baseRequest, request, response)
     }
@@ -59,22 +59,22 @@ trait TestServer extends StrictLogging {
     private final val _webSocketFactory: WebSocketFactory = new WebSocketFactory(this, 32 * 1024)
   }
 
-  protected def getTargetUrl: String =
+  def getTargetUrl: String =
     "ws://127.0.0.1:" + connector.getLocalPort()
 
   private final class EchoTextWebSocket extends org.eclipse.jetty.websocket.WebSocket with org.eclipse.jetty.websocket.WebSocket.OnTextMessage with org.eclipse.jetty.websocket.WebSocket.OnBinaryMessage {
     private var connection: org.eclipse.jetty.websocket.WebSocket.Connection = null
 
-    def onOpen(connection: org.eclipse.jetty.websocket.WebSocket.Connection) {
+    def onOpen(connection: org.eclipse.jetty.websocket.WebSocket.Connection) = {
       this.connection = connection
       connection.setMaxTextMessageSize(1000)
     }
 
-    def onClose(i: Int, s: String) {
+    def onClose(i: Int, s: String) = {
       connection.close()
     }
 
-    def onMessage(s: String) {
+    def onMessage(s: String) = {
       try {
         connection.sendMessage(s)
       } catch {
@@ -90,7 +90,7 @@ trait TestServer extends StrictLogging {
       }
     }
 
-    def onMessage(data: Array[Byte], offset: Int, length: Int) {
+    def onMessage(data: Array[Byte], offset: Int, length: Int) = {
       try {
         connection.sendMessage(data, offset, length)
       } catch {

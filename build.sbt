@@ -15,9 +15,8 @@ crossScalaVersions := List("2.11.11", "2.12.4")
 fork in Test := true
 
 libraryDependencies ++= Seq(
-  // "com.ning"      %  "async-http-client" % "1.9.40",
-  "org.asynchttpclient" % "async-http-client" % "2.0.37",
-  "org.scala-stm" %% "scala-stm"         % "0.8",
+  "org.scala-stm"       %% "scala-stm"         % "0.8",
+  "org.asynchttpclient" %  "async-http-client" % "2.0.37",
 
   //logging
   "com.typesafe.scala-logging" %% "scala-logging"   % "3.7.2",
