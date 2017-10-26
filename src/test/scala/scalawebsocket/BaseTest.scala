@@ -17,7 +17,7 @@
 package scalawebsocket
 
 import org.eclipse.jetty.server.nio.SelectChannelConnector
-import com.typesafe.scalalogging.slf4j._
+import com.typesafe.scalalogging._
 import org.eclipse.jetty.server.{Request, Server}
 import org.eclipse.jetty.server.handler.HandlerWrapper
 import org.eclipse.jetty.websocket.{ WebSocketFactory }

@@ -6,21 +6,22 @@ licenses := Seq("Apache License 2.0" -> url("http://www.apache.org/licenses/LICE
 
 organization := "org.saegesser"
 
-version := "0.1.2"
+version := "0.2.0-SNAPSHOT"
 
-scalaVersion := "2.11.6"
+scalaVersion := "2.11.11"
 
-crossScalaVersions := List("2.11.6", "2.10.5")
+crossScalaVersions := List("2.11.11", "2.12.4")
 
 fork in Test := true
 
 libraryDependencies ++= Seq(
-  "com.ning"      %  "async-http-client" % "1.9.30",
-  "org.scala-stm" %% "scala-stm"         % "0.7",
+  // "com.ning"      %  "async-http-client" % "1.9.40",
+  "org.asynchttpclient" % "async-http-client" % "2.0.37",
+  "org.scala-stm" %% "scala-stm"         % "0.8",
 
   //logging
-  "com.typesafe.scala-logging" %% "scala-logging-slf4j" % "2.1.2",
-  "ch.qos.logback"             %  "logback-classic"     % "1.1.3",
+  "com.typesafe.scala-logging" %% "scala-logging"   % "3.7.2",
+  "ch.qos.logback"             %  "logback-classic" % "1.2.3",
 
   //jetty is used to setup test server
   "org.eclipse.jetty" % "jetty-server"    % "8.1.7.v20120910" % "test",
@@ -28,7 +29,7 @@ libraryDependencies ++= Seq(
   "org.eclipse.jetty" % "jetty-servlet"   % "8.1.7.v20120910" % "test",
   "org.eclipse.jetty" % "jetty-servlets"  % "8.1.7.v20120910" % "test",
 
-  "org.scalatest" %% "scalatest" % "2.2.4" % "test"
+  "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 )
 
 publishMavenStyle := true

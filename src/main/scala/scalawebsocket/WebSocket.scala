@@ -18,18 +18,18 @@
 package scalawebsocket
 
 import scala.concurrent.stm._
-import com.ning.http.client.AsyncHttpClient
-import com.ning.http.client.ws.{
+import org.asynchttpclient._
+import org.asynchttpclient.ws.{
   WebSocket => WS,
   WebSocketTextListener,
   WebSocketByteListener,
   WebSocketUpgradeHandler
 }
-import com.typesafe.scalalogging.slf4j._
+import com.typesafe.scalalogging._
 
 object WebSocket {
   def apply() = {
-    new WebSocket(new AsyncHttpClient())
+    new WebSocket(new DefaultAsyncHttpClient())
   }
 }
 
@@ -82,31 +82,31 @@ class WebSocket(client: AsyncHttpClient) extends StrictLogging {
     */
   protected def internalWebSocketListener = {
     new WebSocketListener {
-      def onError(t: Throwable) {
+      def onError(t: Throwable) = {
         errorHandlers() foreach (_(t))
       }
 
-      def onMessage(message: String) {
+      def onMessage(message: String) = {
         textMessageHandlers() foreach (_(message))
       }
 
-      def onMessage(message: Array[Byte]) {
+      def onMessage(message: Array[Byte]) = {
         binaryMessageHandlers() foreach (_(message))
       }
 
-      def onClose(ws: WS) {
+      def onClose(ws: WS) = {
         closeHandlers() foreach (_(self))
       }
 
-      def onOpen(ws: WS) {
+      def onOpen(ws: WS) = {
         // onOpen handlers are called from open() after the WebSocket has been initialized
       }
 
-      def onFragment(fragment: String, last: Boolean) {
+      def onFragment(fragment: String, last: Boolean) = {
         logger.trace("noop")
       }
 
-      def onFragment(fragment: Array[Byte], last: Boolean) {
+      def onFragment(fragment: Array[Byte], last: Boolean) = {
         logger.trace("noop")
       }
     }
@@ -183,17 +183,17 @@ class WebSocket(client: AsyncHttpClient) extends StrictLogging {
     this
   }
 
-  /** Closes the underlying [[com.ning.http.client.AsyncHttpClient]] client.
+  /** Closes the underlying [[org.asynchttpclient.AsyncHttpClient]] client.
     *
     * This method is terminating the chain. After calling it, this instance of [[scalawebsocket.WebSocket]] is no longer useable.
     */
-  def shutdown() {
+  def shutdown() = {
     client.close()
   }
 
 }
 
-/** Trait grouping all supported derivatives of [[com.ning.http.client.websocket.WebSocketListener]]
+/** Trait grouping all supported derivatives of [[org.asynchttpclient.ws.WebSocketListener]]
   *
   */
 trait WebSocketListener extends WebSocketByteListener with WebSocketTextListener

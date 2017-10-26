@@ -21,10 +21,10 @@ package scalawebsocket
 
 import java.io.IOException
 import javax.servlet.http.HttpServletRequest
-import com.typesafe.scalalogging.slf4j._
+import com.typesafe.scalalogging._
 import java.util.concurrent.{TimeUnit, CountDownLatch}
-import com.ning.http.client.AsyncHttpClient
-import com.ning.http.client.ws.{ WebSocket => WS }
+import org.asynchttpclient._
+import org.asynchttpclient.ws.{ WebSocket => WS }
 import org.scalatest._
 import org.scalatest.matchers._
 
@@ -148,7 +148,7 @@ class WebSocketSpec extends FlatSpec with TestServer with BeforeAndAfterAll with
   }
 
   it should "shut down correctly" in {
-    val client = new AsyncHttpClient()
+    val client = new DefaultAsyncHttpClient()
     val ws = new WebSocket(client)
     ws.shutdown()
     client should be('closed)
