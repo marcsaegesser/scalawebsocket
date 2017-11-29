@@ -8,9 +8,9 @@ organization := "org.saegesser"
 
 version := "0.2.0-SNAPSHOT"
 
-scalaVersion := "2.11.11"
+scalaVersion := "2.11.12"
 
-crossScalaVersions := List("2.11.11", "2.12.4")
+crossScalaVersions := List("2.11.12", "2.12.4")
 
 fork in Test := true
 
