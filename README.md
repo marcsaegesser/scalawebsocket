@@ -3,9 +3,9 @@ ScalaWebSocket
 
 ScalaWebSocket provides Scala vocabulary for async-http-client's WebSocket support.
 
-Currently compiled against Scala 2.10.5 and 2.11.6
+Currently compiled against Scala 2.11.12 and 2.12.4.
 
-Current version is **0.1.2**
+Current version is **0.2.0**
 
 [![Build Status](https://travis-ci.org/marcsaegesser/scalawebsocket.png)](https://travis-ci.org/marcsaegesser/scalawebsocket)
 
@@ -22,7 +22,7 @@ resolvers += "Sonatype snapshots" at "http://oss.sonatype.org/content/repositori
 #### Using SBT
 
 ```
-libraryDependncies += "org.saegesser" %% "scalawebsocket" % "0.1.2"
+libraryDependncies += "org.saegesser" %% "scalawebsocket" % "0.2.0"
 ```
 
 #### Using Maven
@@ -30,7 +30,7 @@ libraryDependncies += "org.saegesser" %% "scalawebsocket" % "0.1.2"
 <dependency>
   <groupId>org.saegesser</groupId>
   <artifactId>scalawebsocket_2.10</artifactId>
-  <version>0.1.2</version>
+  <version>0.2.0</version>
 </dependency>
 ```
 
@@ -68,7 +68,7 @@ Credit has to go to @jfarcand as I used testing part of his [WCS project](https:
 
 License
 =======
-    Copyright 2015 Marc Saegesser
+    Copyright 2017 Marc Saegesser
     Copyright 2013 Piotr Buda
 
     Licensed under the Apache License, Version 2.0 (the "License");
