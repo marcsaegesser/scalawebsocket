@@ -6,7 +6,7 @@ licenses := Seq("Apache License 2.0" -> url("http://www.apache.org/licenses/LICE
 
 organization := "org.saegesser"
 
-version := "0.2.1-SNAPSHOT"
+version := "0.2.1"
 
 scalaVersion := "2.11.12"
 
@@ -19,7 +19,7 @@ libraryDependencies ++= Seq(
   "org.asynchttpclient" %  "async-http-client" % "2.0.38",
 
   //logging
-  "com.typesafe.scala-logging" %% "scala-logging"   % "3.8.0",
+  "com.typesafe.scala-logging" %% "scala-logging"   % "3.7.2",
   "ch.qos.logback"             %  "logback-classic" % "1.2.3",
 
   //jetty is used to setup test server
@@ -30,6 +30,8 @@ libraryDependencies ++= Seq(
 
   "org.scalatest" %% "scalatest" % "3.0.4" % "test"
 )
+
+credentials += Credentials(Path.userHome / ".credentials.sonatype")
 
 publishMavenStyle := true
 
