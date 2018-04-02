@@ -6,7 +6,7 @@ licenses := Seq("Apache License 2.0" -> url("http://www.apache.org/licenses/LICE
 
 organization := "org.saegesser"
 
-version := "0.2.0"
+version := "0.2.1-SNAPSHOT"
 
 scalaVersion := "2.11.12"
 
@@ -16,10 +16,10 @@ fork in Test := true
 
 libraryDependencies ++= Seq(
   "org.scala-stm"       %% "scala-stm"         % "0.8",
-  "org.asynchttpclient" %  "async-http-client" % "2.0.37",
+  "org.asynchttpclient" %  "async-http-client" % "2.0.38",
 
   //logging
-  "com.typesafe.scala-logging" %% "scala-logging"   % "3.7.2",
+  "com.typesafe.scala-logging" %% "scala-logging"   % "3.8.0",
   "ch.qos.logback"             %  "logback-classic" % "1.2.3",
 
   //jetty is used to setup test server
